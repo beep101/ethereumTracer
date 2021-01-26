@@ -1,0 +1,14 @@
+test-results/
+tmp/
+routes/
+*.exe
+*.exe~
+*.dll
+*.so
+*.dylib
+
+*.test
+
+*.out
+
+/check/*

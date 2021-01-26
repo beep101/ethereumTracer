@@ -1,0 +1,92 @@
+{{set . "title" "Home"}}
+{{template "header.html" .}}
+
+<div style="padding:20px;background-color:#2471ff">
+  <div>
+    <p>Results might be incorrect for users with more than 10,000 transactions of some type and users who paid transaction fees for tokens other than ECR-20 and ECR-721.</p>
+  </div>
+  <div>
+    <input type="radio" id="ether" name="currency" value="eth" checked/>
+    <label for="ether">Ether</label>
+    <input type="radio" id="token" name="currency" value="tkn"/>
+    <label for="token">Tokens</label><br>
+    <label>Address: </label>
+    <input type="text" id="address" name="address" placeholder="Hex addres" size="60"/><br>
+  </div>
+  <div>
+
+      <label>Transactions history from block: </label>
+      <input type="text" id="fromBlock" name="fromBlock" placeholder="Block number"/>
+      <input type="button" value="Submit" id="transactionsBtn"/>
+      <br>
+      <label>Wallet balance at date: </label>
+      <input type="text" id="date" name="date" placeholder="YYYY-MM-DD"/>
+      <input type="button" value="Submit" id="balanceBtn"/>
+
+  </div>
+
+</div>
+<div id="data" style="margin:30px;">
+
+</div>
+
+<script>
+  $("#transactionsBtn").click(function(){
+    var eth=$('#ether').is(':checked');
+    var address=$("#address").val();
+    $.get("transactions",
+    {
+      "eth":eth,
+      "address":$("#address").val(),
+      "from":$("#fromBlock").val()
+    },function(data){
+      $("#data").empty()
+      if (data==null){
+        $("#data").append("<p>0 records found, bad address or small range</p>")
+      }
+      for(t of data){
+        if(t.includes('RECEIVED') || t.includes("MINING")){
+          $("#data").append("<p style=\"background-color:#27c468;\">"+t+"</p>");
+        }else{
+          $("#data").append("<p style=\"background-color:#e25147;\">"+t+"</p>");
+        }
+      }
+    }).fail(function() {
+      $("#data").empty()
+      $("#data").append("<p style=\"background-color:#e25147;\">Something went wrong</p>");
+    });
+  });
+</script>
+<script>
+  $("#balanceBtn").click(function(){
+    var eth=$('#ether').is(':checked');
+    
+    var pat=/^20[1-2]\d-[0-1]\d-[0-3]\d$/;
+    var date=$("#date").val()
+    
+    if(!pat.test(date)){
+      $("#data").empty()
+      $("#data").append("<h3>Date format incorrect</h3>")
+      return
+    }
+    $.get("balance",
+    {
+      "eth":eth,
+      "address":$("#address").val(),
+      "date":$("#date").val()
+    },function(data){
+      $("#data").empty()
+      if(eth){
+        $("#data").append("<h3>"+data+"</h3>")
+      }else{
+        for(t of data){
+          $("#data").append("<h3>"+t+"</h3>")
+        }
+      }
+    }).fail(function() {
+      $("#data").empty()
+      $("#data").append("<p style=\"background-color:#e25147;\">Something went wrong</p>");
+    });
+  });
+</script>
+{{template "footer.html" .}}
