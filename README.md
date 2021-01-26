@@ -1,43 +1,5 @@
-# Welcome to Revel
+EthTracer is a web app that enables Ethereum wallet transaction and balance tracing. The app has an HTML interface that enables client interaction.
 
-A high-productivity web framework for the [Go language](http://www.golang.org/).
+A client can request a list of all transactions for a particular wallet since a specified block (empty field means since genesis) or a wallet balance at midnight of a specified date. Both operations can be done for ether or ECR-20 and ECR-721 tokens.
 
-
-### Start the web server:
-
-   revel run myapp
-
-### Go to http://localhost:9000/ and you'll see:
-
-    "It works"
-
-## Code Layout
-
-The directory structure of a generated Revel application:
-
-    conf/             Configuration directory
-        app.conf      Main app configuration file
-        routes        Routes definition file
-
-    app/              App sources
-        init.go       Interceptor registration
-        controllers/  App controllers go here
-        views/        Templates directory
-
-    messages/         Message files
-
-    public/           Public static assets
-        css/          CSS files
-        js/           Javascript files
-        images/       Image files
-
-    tests/            Test suites
-
-
-## Help
-
-* The [Getting Started with Revel](http://revel.github.io/tutorial/gettingstarted.html).
-* The [Revel guides](http://revel.github.io/manual/index.html).
-* The [Revel sample apps](http://revel.github.io/examples/index.html).
-* The [API documentation](https://godoc.org/github.com/revel/revel).
-
+Revel framework and etherscan.io API were used to develop the app.
